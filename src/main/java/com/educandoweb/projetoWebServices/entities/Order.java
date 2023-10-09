@@ -38,10 +38,10 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
-	
+
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
-	
+
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Payment payment;
 
@@ -88,11 +88,11 @@ public class Order implements Serializable {
 	public void setClient(User client) {
 		this.client = client;
 	}
-	
+
 	public Set<OrderItem> getItems() {
 		return items;
 	}
-	
+
 	public Payment getPayment() {
 		return payment;
 	}
@@ -116,6 +116,16 @@ public class Order implements Serializable {
 			return false;
 		Order other = (Order) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	// methods
+	public Double getTotal() {
+		Double total = 0.0;
+		for (OrderItem item : items) {
+				total += item.getSubTotal();
+		}
+		
+		return total;
 	}
 
 }
